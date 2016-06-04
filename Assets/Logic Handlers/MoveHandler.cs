@@ -9,12 +9,12 @@ public class MoveHandler : MonoBehaviour {
 	GameObject movingFromTile;
 	public bool movingTurn = false;
 	public List <Teams> teams;
-	public List<GameObject> resourcePoint = new List<GameObject>();
+	public List<GameObject> rePoints;
 
 	public void TileClicked(GameObject tile) {
 		if (movingTurn) {
 			if (!makingMove && tile.GetComponent<TileInfo>().minion != null) {
-				if (Uti.FriendlyCheck(tile.GetComponent<TileInfo>().minion.tag, 0) && !tile.GetComponent<TileInfo>().minion.GetComponent<Minion>().moved) { //!makingMove && tile.GetComponent<TileInfo>().unit
+				if (tile.GetComponent<TileInfo>().minion.tag == "P1" && !tile.GetComponent<TileInfo>().minion.GetComponent<Minion>().moved) { //!makingMove && tile.GetComponent<TileInfo>().unit
 					for(int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
 						GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().ColorReset();
 					}
@@ -26,7 +26,7 @@ public class MoveHandler : MonoBehaviour {
 						if (Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) <= 1 &&
 							Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) <= 1) {
 							if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-								if (!Uti.FriendlyCheck(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag, 0)) {
+								if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P2")) {
 									GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().PossibleMove();
 									tempPossibleMoveList.Add(GameObject.FindGameObjectsWithTag("Tile")[x]);
 								}
@@ -44,7 +44,7 @@ public class MoveHandler : MonoBehaviour {
 				GameObject match = Uti.PossibleMoveCheck(tile, posMove);
 				if (match != null) {
 					if (match.GetComponent<TileInfo>().minion != null) {
-						if (!Uti.FriendlyCheck(match.GetComponent<TileInfo>().minion.tag, 0)) {
+						if (match.GetComponent<TileInfo>().minion.tag == "P2") {
 							Attack(movingFromTile, match);
 						}
 					}
@@ -62,12 +62,12 @@ public class MoveHandler : MonoBehaviour {
 		from.GetComponent<TileInfo>().minion.transform.position = to.transform.position;
 		to.GetComponent<TileInfo>().minion = from.GetComponent<TileInfo>().minion;
 		from.GetComponent<TileInfo>().minion = null;
-		if(Uti.FriendlyCheck(to.GetComponent<TileInfo>().minion.tag, 0))
+		if(to.GetComponent<TileInfo>().minion.tag == "P1")
 			to.GetComponent<TileInfo>().minion.GetComponent<Minion>().moved = true;
-		if (to.GetComponent<TileInfo>().tilePos == new Vector2(10, 1) && Uti.FriendlyCheck(to.GetComponent<TileInfo>().minion.tag, 0)) {
+		if (to.GetComponent<TileInfo>().tilePos == new Vector2(1, 20) && to.GetComponent<TileInfo>().minion.tag == "P1") {
 			GameObject.Find("WinScreen").GetComponent<WinLoseReciever>().EndGame(true);
 		}
-		if (to.GetComponent<TileInfo>().tilePos == new Vector2(1, 10) && !Uti.FriendlyCheck(to.GetComponent<TileInfo>().minion.tag, 0)) {
+		if (to.GetComponent<TileInfo>().tilePos == new Vector2(20, 1) && to.GetComponent<TileInfo>().minion.tag == "P2") {
 			GameObject.Find("WinScreen").GetComponent<WinLoseReciever>().EndGame(false);
 		}
 	}
@@ -83,13 +83,13 @@ public class MoveHandler : MonoBehaviour {
 		}
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0 &&
 			from.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def > 0) {
-			if(Uti.FriendlyCheck(from.GetComponent<TileInfo>().minion.tag, 0))
+			if(from.GetComponent<TileInfo>().minion.tag == "P1")
 				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().CardAdd();
 			to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().DestroyCall();
 			Transfer(from, to);
 		}
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0) {
-			if (Uti.FriendlyCheck(from.GetComponent<TileInfo>().minion.tag, 0))
+			if (from.GetComponent<TileInfo>().minion.tag == "P1")
 				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().CardAdd();
 		}
 	}
@@ -131,7 +131,7 @@ public class Uti {
 		return null;
 	}
 
-	public static bool FriendlyCheck(string tagName, int currentTeam)
+	/*public static bool FriendlyCheck(string tagName, int currentTeam)
 	{
 		MoveHandler component = GameObject.Find("Main Camera").GetComponent<MoveHandler>();
 		for (int x = 0; x < Uti.ListLength(component.teams[currentTeam].members); x++)
@@ -142,9 +142,9 @@ public class Uti {
 			}
 		}
 		return false;
-	}
+	}*/
 
-	public static bool BaseTaken(Vector2 pos, int team) {
+	/*public static bool BaseTaken(Vector2 pos, int team) {
 		for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
 			if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == pos) {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
@@ -155,7 +155,7 @@ public class Uti {
 			}
 		}
 		return false;
-	}
+	}*/
 }
 
 [System.Serializable]

@@ -90,6 +90,6 @@ public class TurnHandler : MonoBehaviour {
 			firstTime = false;
 		}
 		turns++;
-		StartCoroutine(GetComponent<EnemyAI2>().EnemyInit());
+		StartCoroutine(GetComponent<EnemyAI>().EnemyInit());
 	}
 }

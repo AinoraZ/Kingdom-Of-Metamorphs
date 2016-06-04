@@ -18,14 +18,10 @@ public class TileInfo : MonoBehaviour {
 
 	public void ColorReset() {
 		SpriteRenderer rend = GetComponent<SpriteRenderer>();
-		if (tilePos == new Vector2(1, 1) || tilePos == new Vector2(10, 10)) {
-			rend.color = new Color(255, 255, 0);
-		}
-		else if (tilePos == new Vector2(1, 10) || tilePos == new Vector2(10, 1)) {
+		rend.color = new Color(255, 255, 255);
+		TileIn(rend);
+		if (tilePos == new Vector2(1, 20) || tilePos == new Vector2(20, 1)) {
 			rend.color = new Color(204, 0, 204);
-		}
-		else {
-			rend.color = new Color(255, 255, 255);
 		}
 	}
 
@@ -49,6 +45,15 @@ public class TileInfo : MonoBehaviour {
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MoveHandler>().TileClicked(gameObject);
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Spawner>().TileClicked(gameObject);
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().MinionClicked(gameObject);
+		}
+	}
+
+	void TileIn(SpriteRenderer rend) {
+		MoveHandler handler = GameObject.Find("Main Camera").GetComponent<MoveHandler>();
+		for (int x = 0; x < Uti.ListLength(handler.rePoints); x++) {
+			if (tilePos == handler.rePoints[x].GetComponent<TileInfo>().tilePos) {
+				rend.color = new Color(255, 255, 0);
+			}
 		}
 	}
 }

@@ -13,10 +13,10 @@ public class Spawner : MonoBehaviour {
 	void Refresh() {
 		List<GameObject> tiles = new List<GameObject>(GameObject.FindGameObjectsWithTag("Tile"));
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
-			if ((Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+			if ((Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
+				Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
+				(Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
+				Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
 			friendlySpawn.Add(tiles[x]);
 			}
 		}
@@ -29,10 +29,10 @@ public class Spawner : MonoBehaviour {
 			}
 		}
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
-			if ((Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+			if ((Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
+				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
+				(Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
+				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
 				spawner2List.Add(tiles[x]);
 			}
 		}
@@ -68,7 +68,7 @@ public class Spawner : MonoBehaviour {
 			if (!secondCheck) {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(1, 1)) {
 					if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-						if (Uti.FriendlyCheck(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag, 0)) {
+						if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly") {
 							for (int z = 0; z < Uti.ListLength(spawner1List); z++) {
 								if (spawner1List[z].GetComponent<TileInfo>().minion == null) {
 									spawner1List[z].GetComponent<TileInfo>().PossibleSpawn();
@@ -86,9 +86,9 @@ public class Spawner : MonoBehaviour {
 				}
 			}
 			else {
-				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(10, 10)) {
+				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(20, 20)) {
 					if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-						if (Uti.FriendlyCheck(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag, 0)) {
+						if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly") {
 							for (int z = 0; z < Uti.ListLength(spawner2List); z++) {
 								if (spawner2List[z].GetComponent<TileInfo>().minion == null) {
 									spawner2List[z].GetComponent<TileInfo>().PossibleSpawn();

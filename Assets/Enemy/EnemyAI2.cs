@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -137,7 +137,7 @@ public class EnemyAI2 : MonoBehaviour {
 				tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = AttackNearBase(tile);
 			}
 			else {
-				/*if (PointNotProtected(new Vector2(1, 1)) != null) {
+				if (PointNotProtected(new Vector2(1, 1)) != null) {
 					possibleJobs.Add(PointNotProtected(new Vector2(1, 1)));
 				}
 				if (PointNotProtected(new Vector2(10, 10)) != null) {
@@ -145,25 +145,7 @@ public class EnemyAI2 : MonoBehaviour {
 				}
 				if (PointNotProtected(new Vector2(1, 10)) != null) {
 					possibleJobs.Add(PointNotProtected(new Vector2(1, 10)));
-				}*/
-				for (int x = 0; x < Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().teams); x++) {
-					if (x != currentTeam) {
-						for (int z = 0; z < Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().teams[x].bases); z++) {
-							if (PointNotProtected(GameObject.Find("Main Camera").GetComponent<MoveHandler>().teams[x].bases[z].GetComponent<TileInfo>().tilePos) != null) {
-								possibleJobs.Add(PointNotProtected(GameObject.Find("Main Camera").GetComponent<MoveHandler>().teams[x].bases[z].GetComponent<TileInfo>().tilePos));
-							}
-						}
-					}
 				}
-
-				//Debug.Log(Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint));
-
-				/*for (int x = 0; x < Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint); x++) {
-					Debug.Log(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint[x].name);
-					if (PointNotProtected(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint[x].GetComponent<TileInfo>().tilePos) != null) {
-						possibleJobs.Add(PointNotProtected(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint[x].GetComponent<TileInfo>().tilePos));
-					}
-				}*/
 				tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = possibleJobs[new System.Random().Next(Uti.ListLength(possibleJobs))];
 				possibleJobs = new List<GameObject>();
 			}
@@ -287,4 +269,4 @@ public class EnemyAI2 : MonoBehaviour {
 		return null;
 	}
 	//----------MOVING end-----------//
-}
+}*/

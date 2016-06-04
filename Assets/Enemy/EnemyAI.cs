@@ -21,11 +21,9 @@ public class EnemyAI : MonoBehaviour {
 	public IEnumerator EnemyInit() {
 		Spawn(SpawnLocal());
 		yield return new WaitForSeconds(0.1f);
-		EnemyAddSpawn();
-		yield return new WaitForSeconds(0.1f);
 		MovementStart();
 		//--Debug--//
-		yield return new WaitForSeconds(0.1f);
+		yield return new WaitForSeconds(0.3f);
 		GetComponent<TurnHandler>().FriendlySpawn = true;
 		GetComponent<TurnHandler>().SwitchTurns();
 		//--Debug--//
@@ -66,16 +64,36 @@ public class EnemyAI : MonoBehaviour {
 		spawner1List = new List<GameObject>();
 		spawner2List = new List<GameObject>();
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
-			if ((Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-				Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+			if ((Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
+				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
+				(Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
+				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
 				if (tiles[x].GetComponent<TileInfo>().minion == null) {
 					posLocalSpawn.Add(tiles[x]);
 				}
 			}
 		}
+		MoveHandler handler = GameObject.Find("Main Camera").GetComponent<MoveHandler>();
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
+			for (int z = 0; z < Uti.ListLength(handler.rePoints); z++) {
+				Vector2 rePointPos = handler.rePoints[z].GetComponent<TileInfo>().tilePos;
+				if ((Mathf.Abs(rePointPos.x - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
+					Mathf.Abs(rePointPos.y - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
+					(Mathf.Abs(rePointPos.x - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
+					Mathf.Abs(rePointPos.y - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+					if (handler.rePoints[z].GetComponent<TileInfo>().minion != null) {
+						if (handler.rePoints[z].GetComponent<TileInfo>().minion.tag == "P2") {
+							posLocalSpawn.Add(tiles[x]);
+						}
+					}
+				}
+			}
+		}
+
+		Debug.Log(Uti.ListLength(posLocalSpawn));
+	}
+
+		/*for (int x = 0; x < Uti.ListLength(tiles); x++) {
 			if ((Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
 				Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
 				(Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
@@ -86,26 +104,25 @@ public class EnemyAI : MonoBehaviour {
 			}
 		}
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
-			if ((Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+			if ((Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
+				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
+				(Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
+				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
 				if (tiles[x].GetComponent<TileInfo>().minion == null) {
 					spawner2List.Add(tiles[x]);
 				}
 			}
-		}
-	}
+		}*/
 	//--Refresh--//
 
 	//--Capturable Point Spawning--//
-	public void EnemyAddSpawn(bool secondCheck = false) {
+	/*public void EnemyAddSpawn(bool secondCheck = false) {
 		Refresh();
 		for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
 			if (!secondCheck) {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(1, 1)) {
 					if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-						if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Enemy")) {
+						if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P2")) {
 							Spawn(SpawnIn(spawner1List));
 							EnemyAddSpawn(true);
 						}
@@ -119,16 +136,16 @@ public class EnemyAI : MonoBehaviour {
 				}
 			}
 			else {
-				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(10, 10)) {
+				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(20, 20)) {
 					if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-						if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Enemy")) {
+						if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P2")) {
 							Spawn(SpawnIn(spawner2List));
 						}
 					}
 				}
 			}
 		}
-	}
+	}*/
 	//--Capturable Point Spawning--//
 
 	//----------SPAWNINGend-----------//
@@ -138,7 +155,7 @@ public class EnemyAI : MonoBehaviour {
 	private void MovementStart() {
 		for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
 			if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Enemy") {
+				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P2") {
 					PossibleEnemyMove(GameObject.FindGameObjectsWithTag("Tile")[x]);
 				}
 			}
@@ -156,7 +173,7 @@ public class EnemyAI : MonoBehaviour {
 				(Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
 				Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-					if (!(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Enemy")) {
+					if (!(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P2")) {
 						posMove.Add(GameObject.FindGameObjectsWithTag("Tile")[x]);
 					}
 				}
@@ -175,22 +192,30 @@ public class EnemyAI : MonoBehaviour {
 			tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = AttackNear(tile, posMove);
 		}
 		else if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective == null) {
-			if (PointNotProtected(new Vector2(10, 1)) != null) {
-				tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = PointNotProtected(new Vector2(10, 1));
+			if (PointNotProtected(new Vector2(1, 20)) != null) {
+				tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = PointNotProtected(new Vector2(1, 20));
 			}
 			else if (AttackNearBase(tile) != null) {
 				tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = AttackNearBase(tile);
 			}
 			else {
-				if (PointNotProtected(new Vector2(1, 1)) != null) {
+				/*if (PointNotProtected(new Vector2(1, 1)) != null) {
 					possibleJobs.Add(PointNotProtected(new Vector2(1, 1)));
 				}
-				if (PointNotProtected(new Vector2(10, 10)) != null) {
-					possibleJobs.Add(PointNotProtected(new Vector2(10, 10)));
+				if (PointNotProtected(new Vector2(20, 20)) != null) {
+					possibleJobs.Add(PointNotProtected(new Vector2(20, 20)));
 				}
-				if (PointNotProtected(new Vector2(1, 10)) != null) {
-					possibleJobs.Add(PointNotProtected(new Vector2(1, 10)));
+				if (PointNotProtected(new Vector2(20, 1)) != null) {
+					possibleJobs.Add(PointNotProtected(new Vector2(20, 1)));
+				}*/
+				MoveHandler jobHandler = GameObject.Find("Main Camera").GetComponent<MoveHandler>();
+
+				for (int x = 0; x < Uti.ListLength(jobHandler.rePoints); x++) {
+					if (PointNotProtected(jobHandler.rePoints[x].GetComponent<TileInfo>().tilePos) != null) {
+						possibleJobs.Add(PointNotProtected(jobHandler.rePoints[x].GetComponent<TileInfo>().tilePos));
+					}
 				}
+
 				tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = possibleJobs[new System.Random().Next(Uti.ListLength(possibleJobs))];
 				possibleJobs = new List<GameObject>();
 			}
@@ -200,7 +225,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void JobRefresh(GameObject tile) {
 		if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective != null){
-			if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective.tag != "Friendly") {
+			if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective.tag != "P1") {
 				if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective.GetComponent<TileInfo>().tilePos != tile.GetComponent<TileInfo>().tilePos) {
 					if (PointNotProtected(tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective.GetComponent<TileInfo>().tilePos) == null) {
 						tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective = null;
@@ -213,7 +238,7 @@ public class EnemyAI : MonoBehaviour {
 	GameObject AttackNear(GameObject tile, List<GameObject> posMove) {
 		for (int x = 0; x < Uti.ListLength(posMove); x++) {
 				if (posMove[x].GetComponent<TileInfo>().minion != null) {
-					if (posMove[x].GetComponent<TileInfo>().minion.tag == "Friendly") {
+					if (posMove[x].GetComponent<TileInfo>().minion.tag == "P1") {
 						if (posMove[x].GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def - tile.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().atk <= 0) {
 							return posMove[x];
 						}
@@ -226,9 +251,9 @@ public class EnemyAI : MonoBehaviour {
 	GameObject AttackNearBase(GameObject tile) {			//Called when there is an attacker near the base
 		for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
 			if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly") {
+				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P1") {
 					if (Vector2.Distance(tile.GetComponent<TileInfo>().tilePos, GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos) < 3f) {
-						if (Vector2.Distance(tile.GetComponent<TileInfo>().tilePos, new Vector2(10, 1)) < 3f) {
+						if (Vector2.Distance(tile.GetComponent<TileInfo>().tilePos, new Vector2(1, 20)) < 3f) {
 							return GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion;
 						}
 					}
@@ -253,7 +278,7 @@ public class EnemyAI : MonoBehaviour {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion == null) {
 					return GameObject.FindGameObjectsWithTag("Tile")[x];
 				}
-				else if(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly") {
+				else if(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P1") {
 					return GameObject.FindGameObjectsWithTag("Tile")[x];
 				}
 			}
@@ -268,7 +293,7 @@ public class EnemyAI : MonoBehaviour {
 		Refresh();
 		if (Uti.ListLength(posMove) > 0) {
 			if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective != null) {
-				if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective.tag == "Friendly") {
+				if (tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective.tag == "P1") {
 					GameObject tileMinion = TileWithMinion(tile.GetComponent<TileInfo>().minion.GetComponent<Enemy>().objective);
 					StartCoroutine(MoveToObjective(tile, posMove, tileMinion));
 				}
@@ -284,7 +309,7 @@ public class EnemyAI : MonoBehaviour {
 		yield return new WaitForSeconds(0.2f);
 		int goToTile = ShortestDist(posMove, objectiveTile);
 		if (posMove[goToTile].GetComponent<TileInfo>().minion != null) {
-			if (posMove[goToTile].GetComponent<TileInfo>().minion.tag == "Friendly") {
+			if (posMove[goToTile].GetComponent<TileInfo>().minion.tag == "P1") {
 				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MoveHandler>().Attack(tile, posMove[goToTile]);
 			}
 		}
