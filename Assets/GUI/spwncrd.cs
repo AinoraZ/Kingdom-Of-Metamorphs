@@ -7,6 +7,6 @@ public class spwncrd : MonoBehaviour {
 
 	public void spwn () {
 		
-		manager.AddCard (Random.Range(0,  3));
+		manager.AddCard (0);
 	}
 }
