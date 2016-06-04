@@ -4,25 +4,17 @@ using System.Collections.Generic;
 
 public class MoveHandler : MonoBehaviour {
 
-	// Use this for initialization
-	void Start() {
-
-	}
-
-	// Update is called once per frame
-	void Update() {
-
-	}
-
 	bool makingMove = false;
 	List<GameObject> posMove;
 	GameObject movingFromTile;
 	public bool movingTurn = false;
+	public List <Teams> teams;
+	public List<GameObject> resourcePoint = new List<GameObject>();
 
 	public void TileClicked(GameObject tile) {
 		if (movingTurn) {
 			if (!makingMove && tile.GetComponent<TileInfo>().minion != null) {
-				if (tile.GetComponent<TileInfo>().minion.tag == "Friendly" && !tile.GetComponent<TileInfo>().minion.GetComponent<Minion>().moved) { //!makingMove && tile.GetComponent<TileInfo>().unit
+				if (Uti.FriendlyCheck(tile.GetComponent<TileInfo>().minion.tag, 0) && !tile.GetComponent<TileInfo>().minion.GetComponent<Minion>().moved) { //!makingMove && tile.GetComponent<TileInfo>().unit
 					for(int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
 						GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().ColorReset();
 					}
@@ -31,14 +23,10 @@ public class MoveHandler : MonoBehaviour {
 					List<GameObject> tempPossibleMoveList = new List<GameObject>();
 					Vector2 tilePos = tile.GetComponent<TileInfo>().tilePos;
 					for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
-						if ((Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-							Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-							(Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-							Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-							(Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-							Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+						if (Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) <= 1 &&
+							Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) <= 1) {
 							if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-								if (!(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly")) {
+								if (!Uti.FriendlyCheck(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag, 0)) {
 									GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().PossibleMove();
 									tempPossibleMoveList.Add(GameObject.FindGameObjectsWithTag("Tile")[x]);
 								}
@@ -56,7 +44,7 @@ public class MoveHandler : MonoBehaviour {
 				GameObject match = Uti.PossibleMoveCheck(tile, posMove);
 				if (match != null) {
 					if (match.GetComponent<TileInfo>().minion != null) {
-						if (match.GetComponent<TileInfo>().minion.tag == "Enemy") {
+						if (!Uti.FriendlyCheck(match.GetComponent<TileInfo>().minion.tag, 0)) {
 							Attack(movingFromTile, match);
 						}
 					}
@@ -74,12 +62,12 @@ public class MoveHandler : MonoBehaviour {
 		from.GetComponent<TileInfo>().minion.transform.position = to.transform.position;
 		to.GetComponent<TileInfo>().minion = from.GetComponent<TileInfo>().minion;
 		from.GetComponent<TileInfo>().minion = null;
-		if(to.GetComponent<TileInfo>().minion.tag == "Friendly")
+		if(Uti.FriendlyCheck(to.GetComponent<TileInfo>().minion.tag, 0))
 			to.GetComponent<TileInfo>().minion.GetComponent<Minion>().moved = true;
-		if (to.GetComponent<TileInfo>().tilePos == new Vector2(10, 1) && to.GetComponent<TileInfo>().minion.tag == "Friendly") {
+		if (to.GetComponent<TileInfo>().tilePos == new Vector2(10, 1) && Uti.FriendlyCheck(to.GetComponent<TileInfo>().minion.tag, 0)) {
 			GameObject.Find("WinScreen").GetComponent<WinLoseReciever>().EndGame(true);
 		}
-		if (to.GetComponent<TileInfo>().tilePos == new Vector2(1, 10) && to.GetComponent<TileInfo>().minion.tag == "Enemy") {
+		if (to.GetComponent<TileInfo>().tilePos == new Vector2(1, 10) && !Uti.FriendlyCheck(to.GetComponent<TileInfo>().minion.tag, 0)) {
 			GameObject.Find("WinScreen").GetComponent<WinLoseReciever>().EndGame(false);
 		}
 	}
@@ -87,15 +75,21 @@ public class MoveHandler : MonoBehaviour {
 	public void Attack(GameObject from, GameObject to) {
 		to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def -= from.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().atk;
 		from.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def -= to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().atk;
+		try {
+			from.GetComponent<TileInfo>().minion.GetComponent<Minion>().moved = true;
+		}
+		catch {
+			Debug.Log("Caught");
+		}
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0 &&
 			from.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def > 0) {
-			if(from.GetComponent<TileInfo>().minion.tag == "Friendly")
+			if(Uti.FriendlyCheck(from.GetComponent<TileInfo>().minion.tag, 0))
 				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().CardAdd();
 			to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().DestroyCall();
 			Transfer(from, to);
 		}
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0) {
-			if (from.GetComponent<TileInfo>().minion.tag == "Friendly")
+			if (Uti.FriendlyCheck(from.GetComponent<TileInfo>().minion.tag, 0))
 				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().CardAdd();
 		}
 	}
@@ -136,4 +130,37 @@ public class Uti {
 		}
 		return null;
 	}
+
+	public static bool FriendlyCheck(string tagName, int currentTeam)
+	{
+		MoveHandler component = GameObject.Find("Main Camera").GetComponent<MoveHandler>();
+		for (int x = 0; x < Uti.ListLength(component.teams[currentTeam].members); x++)
+		{
+			if (tagName == component.teams[currentTeam].members[x])
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static bool BaseTaken(Vector2 pos, int team) {
+		for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
+			if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == pos) {
+				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
+					if (FriendlyCheck(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag, team)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+}
+
+[System.Serializable]
+public class Teams
+{
+	public List<string> members;
+	public List<GameObject> bases;
 }

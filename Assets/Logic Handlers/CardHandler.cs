@@ -42,7 +42,7 @@ public class CardHandler : MonoBehaviour {
 	void Mark() {
 		for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
 			if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly") {
+				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P1") {
 					GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().PossibleMove();
 					possibleMove.Add(GameObject.FindGameObjectsWithTag("Tile")[x]);
 				}
