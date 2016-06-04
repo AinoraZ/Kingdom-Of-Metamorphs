@@ -156,7 +156,7 @@ public class EnemyAI2 : MonoBehaviour {
 					}
 				}
 
-				//Debug.Log(Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint));
+				System.Console.WriteLine(Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint));
 
 				/*for (int x = 0; x < Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint); x++) {
 					Debug.Log(GameObject.Find("Main Camera").GetComponent<MoveHandler>().resourcePoint[x].name);
