@@ -31362,12 +31362,14 @@ MonoBehaviour:
   teams:
   - members:
     - P1
-    bases: []
+    bases:
+    - {fileID: 2034520186}
   - members:
     - P2
-    bases: []
-  resourcePoints:
-  - {fileID: 360988789}
+    bases:
+    - {fileID: 1778093575}
+  resourcePoint:
+  - {fileID: 2066835467}
   - {fileID: 783423557}
 --- !u!114 &1485609311
 MonoBehaviour:
