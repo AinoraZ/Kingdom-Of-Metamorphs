@@ -17,7 +17,7 @@ public class Spawner : MonoBehaviour {
 				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
 				(Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
 				Mathf.Abs(10 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
-				friendlySpawn.Add(tiles[x]);
+			friendlySpawn.Add(tiles[x]);
 			}
 		}
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
@@ -68,7 +68,7 @@ public class Spawner : MonoBehaviour {
 			if (!secondCheck) {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(1, 1)) {
 					if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-						if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly")) {
+						if (Uti.FriendlyCheck(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag, 0)) {
 							for (int z = 0; z < Uti.ListLength(spawner1List); z++) {
 								if (spawner1List[z].GetComponent<TileInfo>().minion == null) {
 									spawner1List[z].GetComponent<TileInfo>().PossibleSpawn();
@@ -88,7 +88,7 @@ public class Spawner : MonoBehaviour {
 			else {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos == new Vector2(10, 10)) {
 					if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
-						if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "Friendly")) {
+						if (Uti.FriendlyCheck(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag, 0)) {
 							for (int z = 0; z < Uti.ListLength(spawner2List); z++) {
 								if (spawner2List[z].GetComponent<TileInfo>().minion == null) {
 									spawner2List[z].GetComponent<TileInfo>().PossibleSpawn();
@@ -116,13 +116,15 @@ public class Spawner : MonoBehaviour {
 		if (friendlySpawning) {
 			GameObject match = Uti.PossibleMoveCheck(tile, friendlySpawn);
 			if (match != null) {
-				GameObject temp = Instantiate(friendlyMinion, match.transform.position, transform.rotation) as GameObject;
-				match.GetComponent<TileInfo>().MinionChange(temp);
-				Uti.Reset(friendlySpawn);
-				friendlySpawning = false;
-				GetComponent<TurnHandler>().FriendlySpawn = false;
-				GetComponent<TurnHandler>().FriendlyAddSpawn = true;
-				GetComponent<TurnHandler>().SwitchTurns();
+				if (tile.GetComponent<TileInfo>().minion == null) {
+					GameObject temp = Instantiate(friendlyMinion, match.transform.position, transform.rotation) as GameObject;
+					match.GetComponent<TileInfo>().MinionChange(temp);
+					Uti.Reset(friendlySpawn);
+					friendlySpawning = false;
+					GetComponent<TurnHandler>().FriendlySpawn = false;
+					GetComponent<TurnHandler>().FriendlyAddSpawn = true;
+					GetComponent<TurnHandler>().SwitchTurns();
+				}
 			}
 		}
 		else if (friendlySpawner1) {

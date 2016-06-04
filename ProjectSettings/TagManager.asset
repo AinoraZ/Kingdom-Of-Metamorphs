@@ -5,8 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tile
-  - Friendly
-  - Enemy
+  - P1
+  - P2
+  - P3
+  - P4
   - Cards
   layers:
   - Default
