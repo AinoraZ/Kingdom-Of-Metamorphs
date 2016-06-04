@@ -38,7 +38,7 @@ public class CameraControl : MonoBehaviour {
 			buttonPress = true;     //Right Button is pressed right now
 		}
 		else{
-			GameObject.FindWithTag("MainCamera").transform.position = new Vector3(transform.position.x + ((mousePosition.x - Input.mousePosition.x) / divideBy), (transform.position.y + (mousePosition.y - Input.mousePosition.y) / divideBy), -10f);
+			GameObject.FindWithTag("MainCamera").transform.position = new Vector3(transform.position.x + ((mousePosition.x - Input.mousePosition.x) / divideBy), (transform.position.y + (mousePosition.y - Input.mousePosition.y) / divideBy), -6.79f);
 			mousePosition = Input.mousePosition;
 		}
 	}

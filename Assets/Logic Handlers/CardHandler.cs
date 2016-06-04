@@ -99,7 +99,7 @@ public class CardHandler : MonoBehaviour {
 		}
 	}
 
-	public void CardAdd() {
+	public void CardAdd() { //Cia prideda korta (callina is MoveHandler Attack function
 		if (cardNum <= 4) {
 			int emptyNum = emptySlot();
 			if (emptyNum != -1) {

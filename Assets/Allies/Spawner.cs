@@ -20,20 +20,20 @@ public class Spawner : MonoBehaviour {
 			friendlySpawn.Add(tiles[x]);
 			}
 		}
+		MoveHandler handler = GameObject.Find("Main Camera").GetComponent<MoveHandler>();
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
-			if ((Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-				Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(1 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
-				spawner1List.Add(tiles[x]);
-			}
-		}
-		for (int x = 0; x < Uti.ListLength(tiles); x++) {
-			if ((Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
-				spawner2List.Add(tiles[x]);
+			for (int z = 0; z < Uti.ListLength(handler.rePoints); z++) {
+				Vector2 rePointPos = handler.rePoints[z].GetComponent<TileInfo>().tilePos;
+				if ((Mathf.Abs(rePointPos.x - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
+					Mathf.Abs(rePointPos.y - tiles[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
+					(Mathf.Abs(rePointPos.x - tiles[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
+					Mathf.Abs(rePointPos.y - tiles[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+					if (handler.rePoints[z].GetComponent<TileInfo>().minion != null) {
+						if (handler.rePoints[z].GetComponent<TileInfo>().minion.tag == "P1") {
+							friendlySpawn.Add(tiles[x]);
+						}
+					}
+				}
 			}
 		}
 	}
