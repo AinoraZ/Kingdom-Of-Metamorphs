@@ -18,7 +18,7 @@ public class CardHandler : MonoBehaviour {
 
 	}
 
-	public CardInfo[] cards = {new CardInfo(), new CardInfo(), new CardInfo(), new CardInfo()};
+	public CardInfo[] cards = {new CardInfo(), new CardInfo(), new CardInfo(), new CardInfo(), new CardInfo(), new CardInfo(), new CardInfo()};
 	private GameObject clickedCard;
 
 	public void CardClicked(GameObject card) {
@@ -100,11 +100,12 @@ public class CardHandler : MonoBehaviour {
 	}
 
 	public void CardAdd() { //Cia prideda korta (callina is MoveHandler Attack function
-		if (cardNum <= 4) {
+		if (cardNum <= 7) {
 			int emptyNum = emptySlot();
 			if (emptyNum != -1) {
 				cards[emptyNum].father = cardFathers[emptyNum];
 				cards[emptyNum].cardEffectNum = new System.Random().Next(5);
+				cardFathers[emptyNum].GetComponent<Image> ().enabled = true;
 				cardFathers[emptyNum].GetComponent<BoxCollider2D>().enabled = true;
 				cardFathers[emptyNum].GetComponent<Image>().sprite = cardTextures[cards[emptyNum].cardEffectNum];
 				cardFathers[emptyNum].GetComponent<Image>().enabled = true;

@@ -45,6 +45,9 @@ public class TileInfo : MonoBehaviour {
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MoveHandler>().TileClicked(gameObject);
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Spawner>().TileClicked(gameObject);
 			GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().MinionClicked(gameObject);
+			if(minion != null)
+				if(minion.tag == "P1")
+					GameObject.Find ("CardButton").GetComponent<CardManager> ().actualyUse (gameObject);
 		}
 	}
 

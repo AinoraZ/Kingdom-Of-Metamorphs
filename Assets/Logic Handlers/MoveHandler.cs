@@ -10,6 +10,7 @@ public class MoveHandler : MonoBehaviour {
 	public bool movingTurn = false;
 	public List <Teams> teams;
 	public List<GameObject> rePoints;
+	public CardManager cmanager;
 
 	public void TileClicked(GameObject tile) {
 		if (movingTurn) {
@@ -83,14 +84,18 @@ public class MoveHandler : MonoBehaviour {
 		}
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0 &&
 			from.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def > 0) {
-			if(from.GetComponent<TileInfo>().minion.tag == "P1")
-				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().CardAdd();
+			if(from.GetComponent<TileInfo>().minion.tag == "P1"){
+				cmanager.AddCard();
+				GameObject.Find ("Main Camera").GetComponent<CardHandler> ().CardAdd();
+			}
 			to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().DestroyCall();
 			Transfer(from, to);
 		}
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0) {
-			if (from.GetComponent<TileInfo>().minion.tag == "P1")
-				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CardHandler>().CardAdd();
+			if (from.GetComponent<TileInfo> ().minion.tag == "P1") {
+				cmanager.AddCard ();
+				GameObject.Find ("Main Camera").GetComponent<CardHandler> ().CardAdd();
+			}
 		}
 	}
 
