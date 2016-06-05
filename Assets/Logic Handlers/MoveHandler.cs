@@ -10,6 +10,17 @@ public class MoveHandler : MonoBehaviour {
 	public bool movingTurn = false;
 	public List <Teams> teams;
 	public List<GameObject> rePoints;
+	public int moveBy = 2;
+	public int forTurns;
+
+	void FixedUpdate() {
+		if (gameObject.GetComponent<TurnHandler>().turns <= forTurns) {
+			moveBy = 2;
+		}
+		else {
+			moveBy = 1;
+		}
+	}
 
 	public void TileClicked(GameObject tile) {
 		if (movingTurn) {
@@ -23,8 +34,8 @@ public class MoveHandler : MonoBehaviour {
 					List<GameObject> tempPossibleMoveList = new List<GameObject>();
 					Vector2 tilePos = tile.GetComponent<TileInfo>().tilePos;
 					for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
-						if (Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) <= 1 &&
-							Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) <= 1) {
+						if (Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) <= moveBy &&
+							Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) <= moveBy) {
 							if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
 								if ((GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P2")) {
 									GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().PossibleMove();

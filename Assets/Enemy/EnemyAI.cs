@@ -7,6 +7,7 @@ public class EnemyAI : MonoBehaviour {
 	public GameObject enemy;
 	public int atk;
 	public int def;
+	public int moveBy;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +20,7 @@ public class EnemyAI : MonoBehaviour {
 	}
 
 	public IEnumerator EnemyInit() {
+		moveBy = GameObject.Find("Main Camera").GetComponent<MoveHandler>().moveBy;
 		Spawn(SpawnLocal());
 		yield return new WaitForSeconds(0.1f);
 		MovementStart();
@@ -166,12 +168,8 @@ public class EnemyAI : MonoBehaviour {
 		List<GameObject> posMove = new List<GameObject>();
 		Vector2 tilePos = tile.GetComponent<TileInfo>().tilePos;
 		for (int x = 0; x < GameObject.FindGameObjectsWithTag("Tile").Length; x++) {
-			if ((Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) == 0 &&
-				Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) == 1) ||
-				(Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) == 1 &&
-				Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) == 0)) {
+			if ((Mathf.Abs(tilePos.x - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.x) <= moveBy &&
+				Mathf.Abs(tilePos.y - GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().tilePos.y) <= moveBy)) {
 				if (GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion != null) {
 					if (!(GameObject.FindGameObjectsWithTag("Tile")[x].GetComponent<TileInfo>().minion.tag == "P2")) {
 						posMove.Add(GameObject.FindGameObjectsWithTag("Tile")[x]);
