@@ -6,6 +6,7 @@ public class MinionInfo : MonoBehaviour {
 
 	public int atk = 4;
 	public int def = 4;
+	public int cost = 2;
 	public GameObject Text;
 
 	public Sprite[] shape;

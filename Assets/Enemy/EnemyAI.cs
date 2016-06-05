@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class EnemyAI : MonoBehaviour {
 
-	public GameObject enemy;
+	public GameObject[] enemy;
 	public int atk;
 	public int def;
 	public int moveBy;
+	public int gemCount = 0;
+	public int gemAmount = 14;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +23,8 @@ public class EnemyAI : MonoBehaviour {
 
 	public IEnumerator EnemyInit() {
 		moveBy = GameObject.Find("Main Camera").GetComponent<MoveHandler>().moveBy;
+		GemAmountCounter();
+		gemCount += gemAmount;
 		Spawn(SpawnLocal());
 		yield return new WaitForSeconds(0.1f);
 		MovementStart();
@@ -31,14 +35,41 @@ public class EnemyAI : MonoBehaviour {
 		//--Debug--//
 	}
 
+	public void GemAmountCounter() {
+		int tempGems = 14;
+		for (int x = 0; x < Uti.ListLength(GameObject.Find("Main Camera").GetComponent<MoveHandler>().rePoints); x++) {
+			if (GameObject.Find("Main Camera").GetComponent<MoveHandler>().rePoints[x].name != "Friendly") {
+				if (GameObject.Find("Main Camera").GetComponent<MoveHandler>().rePoints[x].GetComponent<TileInfo>().minion != null) {
+					if (GameObject.Find("Main Camera").GetComponent<MoveHandler>().rePoints[x].GetComponent<TileInfo>().minion.tag != "P2") {
+						tempGems -= 2;
+					}
+				}
+				else {
+					tempGems -= 2;
+				}
+			}
+		}
+		gemAmount = tempGems;
+	}
+
+	public GameObject MinionChooser() {
+		for (int x = enemy.Length - 1; x >= 0; x--) {
+			if (gemCount >= enemy[x].GetComponent<MinionInfo>().cost) {
+				return enemy[x];
+			}
+		}
+		return enemy[2];
+	}
+
 	//----------SPAWNING-----------//
 
 	//--LocalSpawning--//
 	public void Spawn(GameObject tile) {
 		if (tile != null) {
-			GameObject enemyTemp = Instantiate(enemy, tile.transform.position, Quaternion.Euler(0f, 0f, 0f)) as GameObject;
-			enemyTemp.GetComponent<MinionInfo>().atk = atk;
-			enemyTemp.GetComponent<MinionInfo>().def = def;
+			GameObject enemyTemp = Instantiate(MinionChooser(), tile.transform.position, Quaternion.Euler(0f, 0f, 0f)) as GameObject;
+			gemCount -= MinionChooser().GetComponent<MinionInfo>().cost;
+			atk = enemyTemp.GetComponent<MinionInfo>().atk;
+			def = enemyTemp.GetComponent<MinionInfo>().def;
 			tile.GetComponent<TileInfo>().MinionChange(enemyTemp);
 		}
 	}
