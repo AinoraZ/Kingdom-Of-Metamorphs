@@ -96,7 +96,7 @@ public class MoveHandler : MonoBehaviour {
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0 &&
 			from.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def > 0) {
 			if(from.GetComponent<TileInfo>().minion.tag == "P1"){
-				cmanager.AddCard();
+				//cmanager.AddCard();
 				GameObject.Find ("Main Camera").GetComponent<CardHandler> ().CardAdd();
 			}
 			to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().DestroyCall();
@@ -104,7 +104,7 @@ public class MoveHandler : MonoBehaviour {
 		}
 		if (to.GetComponent<TileInfo>().minion.GetComponent<MinionInfo>().def <= 0) {
 			if (from.GetComponent<TileInfo> ().minion.tag == "P1") {
-				cmanager.AddCard ();
+				//cmanager.AddCard ();
 				GameObject.Find ("Main Camera").GetComponent<CardHandler> ().CardAdd();
 			}
 		}

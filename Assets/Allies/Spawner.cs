@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour {
 	public GameObject friendlyMinion;
 
 	void Refresh() {
+		friendlySpawn = new List<GameObject>();
 		List<GameObject> tiles = new List<GameObject>(GameObject.FindGameObjectsWithTag("Tile"));
 		for (int x = 0; x < Uti.ListLength(tiles); x++) {
 			if ((Mathf.Abs(20 - tiles[x].GetComponent<TileInfo>().tilePos.x) == 0 &&

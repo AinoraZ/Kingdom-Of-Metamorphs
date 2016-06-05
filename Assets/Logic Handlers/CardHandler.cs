@@ -28,6 +28,7 @@ public class CardHandler : MonoBehaviour {
 			}
 			clickedCard = card;
 			for (int x = 0; x < cards.Length; x++) {
+				Debug.Log(card == cards[x].father);
 				if (card == cards[x].father) {
 					effectTemp = cards[x].cardEffectNum;
 					Mark();
@@ -78,7 +79,7 @@ public class CardHandler : MonoBehaviour {
 				cardNum--;
 				CardEffect(clicked.GetComponent<TileInfo>().minion);
 				effectTemp = 0;
-				clickedCard.GetComponent<BoxCollider2D>().enabled = false;
+				clickedCard.GetComponent<Button>().enabled = false;
 				clickedCard.GetComponent<Image>().enabled = false;
 				clickedCard = null;
 				WaitForClick = false;
@@ -106,7 +107,7 @@ public class CardHandler : MonoBehaviour {
 				cards[emptyNum].father = cardFathers[emptyNum];
 				cards[emptyNum].cardEffectNum = new System.Random().Next(5);
 				cardFathers[emptyNum].GetComponent<Image> ().enabled = true;
-				cardFathers[emptyNum].GetComponent<BoxCollider2D>().enabled = true;
+				cardFathers[emptyNum].GetComponent<Button>().enabled = true;
 				cardFathers[emptyNum].GetComponent<Image>().sprite = cardTextures[cards[emptyNum].cardEffectNum];
 				cardFathers[emptyNum].GetComponent<Image>().enabled = true;
 				cardNum++;
@@ -116,7 +117,7 @@ public class CardHandler : MonoBehaviour {
 
 	private int emptySlot() {
 		for (int x = 0; x < Uti.ListLength(cardFathers); x++) {
-			if (cardFathers[x].GetComponent<BoxCollider2D>().enabled == false) {
+			if (cardFathers[x].GetComponent<Button>().enabled == false) {
 				return x;
 			}
 		}
