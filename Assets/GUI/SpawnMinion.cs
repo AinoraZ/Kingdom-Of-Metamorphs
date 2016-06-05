@@ -19,6 +19,5 @@ public class SpawnMinion : MonoBehaviour {
 
 	public void SpawnThis () {
 		camera.GetComponent<Spawner> ().friendlyMinion = spawnThis;
-		gemcount -= camera.GetComponent<Spawner> ().friendlyMinion;
 	}
 }

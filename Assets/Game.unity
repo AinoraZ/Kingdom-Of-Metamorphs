@@ -25185,10 +25185,10 @@ RectTransform:
   - {fileID: 1772951963}
   m_Father: {fileID: 560802952}
   m_RootOrder: 7
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 175.5, y: 162.88}
-  m_SizeDelta: {x: -371, y: -345.25}
+  m_AnchoredPosition: {x: -79.7, y: -67.245}
+  m_SizeDelta: {x: 139.3, y: 115.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1304884512
 MonoBehaviour:
@@ -25234,7 +25234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61548914db51d4ec9ba3d273ac4436dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gems: 0
+  gems: 2
   text: {fileID: 1772951964}
   thing: {fileID: 1485609302}
 --- !u!1 &1314437353
@@ -29500,10 +29500,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c69e8df4e7e4d545b275dc4e119d1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 120930, guid: 5ed9916a0a88efd45a91ab556b41cc48, type: 2}
+  enemy:
+  - {fileID: 120930, guid: 5ed9916a0a88efd45a91ab556b41cc48, type: 2}
+  - {fileID: 178126, guid: 380ed310f6fc47a46bc5617e77faf20b, type: 2}
+  - {fileID: 148806, guid: 171895177cb3305408a62579a5ec2c7d, type: 2}
   atk: 4
   def: 4
   moveBy: 0
+  gemCount: 0
+  gemAmount: 14
 --- !u!114 &1485609310
 MonoBehaviour:
   m_ObjectHideFlags: 0

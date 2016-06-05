@@ -16,7 +16,7 @@ public class TurnHandler : MonoBehaviour {
 	public int turns = 0;
 
 	void Update() {
-		if (firstTime) {
+		/*if (firstTime) {
 			if (FriendlySpawn) {
 				tip.GetComponent<Text>().text = "Click on one of the cyan blocks to place your first minion!";
 			}
@@ -26,7 +26,7 @@ public class TurnHandler : MonoBehaviour {
 			else if (Move) {
 				tip.GetComponent<Text>().text = "Click on your minion and move him to one of the green blocks!";
 			}
-		}
+		}*/
 	}
 
 	IEnumerator Starting() {

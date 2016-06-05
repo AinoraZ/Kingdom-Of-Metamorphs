@@ -118,7 +118,7 @@ public class Spawner : MonoBehaviour {
 			GameObject match = Uti.PossibleMoveCheck(tile, friendlySpawn);
 			if (match != null) {
 				if (tile.GetComponent<TileInfo>().minion == null) {
-					GameObject.Find("Gems").GetComponent<GemCount>().gemcount -= friendlyMinion.GetComponent<MinionInfo> ().cost;
+					GameObject.Find("Gems").GetComponent<GemCount>().gems -= friendlyMinion.GetComponent<MinionInfo> ().cost;
 					GameObject temp = Instantiate(friendlyMinion, match.transform.position, transform.rotation) as GameObject;
 					match.GetComponent<TileInfo>().MinionChange(temp);
 					Uti.Reset(friendlySpawn);
